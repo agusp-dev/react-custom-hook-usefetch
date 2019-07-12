@@ -1,12 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { render } from 'react-dom'
+import useFetch from './custom-hooks/useFetch'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+function App() {
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+    const users = useFetch('https://jsonplaceholder.typicode.com/users', [])
+
+    return (
+      <div className='data'>
+          <h1>Users</h1>
+          <ul>
+              {users.loading && <p>Cargando</p>}
+              {users.data && users.data.map(user => (
+                  <li key={user.id}>{user.name}</li>
+            ))}
+          </ul>
+      </div>
+    );
+}
+
+render(<App />, document.getElementById('root'))
